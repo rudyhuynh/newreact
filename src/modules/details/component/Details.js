@@ -1,32 +1,28 @@
 import React from "react";
-import { unstable_createResource } from "react-cache";
-import { Loader } from "../../common";
 
-const detailsResource = unstable_createResource(() =>
-  fetch("http://localhost:3009/api/details").then(resp => resp.json())
-);
+class Details extends React.Component {
+  state = {details: []}
 
-const DetailList = () => {
-  const details = detailsResource.read();
+  componentDidMount(){
+    fetch("http://localhost:3009/api/details")
+    .then(resp => resp.json())
+    .then(details => this.setState({details}))
+  }
+  
+  render() {
+    const {details} = this.state
 
-  return (
-    <div>
-      <div>Details: </div>
-      <ul>
-        {details.map(detail => (
-          <li key={detail}>{detail}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-const Details = () => {
-  return (
-      <React.Suspense fallback={<h1>Loading...</h1>} maxDuration={200}>
-        <DetailList />
-      </React.Suspense>
-  );
-};
+    return (
+      <div>
+        <div>Details: </div>
+        <ul>
+          {details.map(detail => (
+            <li key={detail}>{detail}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+}
 
 export default Details;

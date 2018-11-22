@@ -1,64 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
-const appReducer = (state, action) => {
-  switch (action.type) {
-    case "setAppName":
-      return {
-        ...state,
-        appName: action.appName
-      };
-    case "setAppDescription":
-      return {
-        ...state,
-        appDescription: action.appDescription
-      };
-    default:
-      return state;
+class Home extends React.Component {
+  state = { appName: "" };
+
+  componentDidUpdate() {
+    document.title = this.state.appName;
   }
-};
 
-function useUpdateAppTitle(appName) {
-  React.useEffect(() => {
-    // componentDidUpdate() , componentDidMount()
-    document.title = appName;
-  });
+  render() {
+    const { appName } = this.state;
+    return (
+      <Wrapper>
+        <div>
+          App Name:{" "}
+          <input
+            value={appName}
+            onChange={e => this.setState({ appName: e.target.value })}
+          />
+        </div>
+      </Wrapper>
+    );
+  }
 }
-
-const Home = () => {
-  const [state, dispatch] = React.useReducer(appReducer, {
-    appName: "",
-    appDescription: ""
-  });
-
-  useUpdateAppTitle(state.appName);
-
-  return (
-    <Wrapper>
-      <div>
-        App Name:{" "}
-        <input
-          value={state.appName}
-          onChange={e =>
-            dispatch({ type: "setAppName", appName: e.target.value })
-          }
-        />
-      </div>
-      <div>
-        App Description:{" "}
-        <textarea
-          value={state.appDescription}
-          onChange={e =>
-            dispatch({
-              type: "setAppDescription",
-              appDescription: e.target.value
-            })
-          }
-        />
-      </div>
-    </Wrapper>
-  );
-};
 
 export default Home;
 
