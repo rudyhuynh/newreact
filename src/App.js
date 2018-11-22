@@ -1,28 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import {Home} from "./modules/home";
+import {Details} from "./modules/details";
+import { TabBar } from "./modules/common";
+import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
+import { ReportPage } from "./modules/report";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+let App = ({ location, history }) => {
+  useEffect(() => {
+    if (location.pathname === "/") {
+      history.push("/home");
+    }
+  }, []);
 
-export default App;
+  return (
+    <Wrapper>
+      <TabBar />
+
+      <Route path="/home" component={Home} />
+      <Route path="/details" component={Details} />
+      <Route path="/report" component={ReportPage} />
+    </Wrapper>
+  );
+};
+
+App = withRouter(App);
+
+export default () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+const Wrapper = styled.div``;
