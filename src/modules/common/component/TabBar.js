@@ -18,8 +18,9 @@ const TabBar = ({ location, history }) => {
         centered
       >
         <Tab label="Home" value="/home" />
+        <Tab label="Map" value="/map" />
         <Tab label="Details" value="/details" />
-        <Tab label="Report" value="/report" />
+        
       </Tabs>
     </Paper>
   );

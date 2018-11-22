@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import {Home} from "./modules/home";
-import {Details} from "./modules/details";
+import { Home } from "./modules/home";
+import { Details } from "./modules/details";
 import { TabBar } from "./modules/common";
 import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
-import { ReportPage } from "./modules/report";
+import { MapPage } from "./modules/map";
 
 let App = ({ location, history }) => {
   useEffect(() => {
@@ -17,9 +17,11 @@ let App = ({ location, history }) => {
     <Wrapper>
       <TabBar />
 
-      <Route path="/home" component={Home} />
-      <Route path="/details" component={Details} />
-      <Route path="/report" component={ReportPage} />
+      <RouteWrapper>
+        <Route path="/home" component={Home} />
+        <Route path="/map" component={MapPage} />
+        <Route path="/details" component={Details} />
+      </RouteWrapper>
     </Wrapper>
   );
 };
@@ -33,3 +35,11 @@ export default () => (
 );
 
 const Wrapper = styled.div``;
+
+const RouteWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 10px;
+`
+
