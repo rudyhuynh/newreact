@@ -1,11 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
-import UsMap from "./UsMap";
+
+const UsMap = React.lazy(() => import("./UsMap"));
 
 const MapPage = () => {
   return (
     <Wrapper>
-      <UsMap />
+      <Suspense fallback={<div>Loading...</div>}>
+        <UsMap />
+      </Suspense>
     </Wrapper>
   );
 };

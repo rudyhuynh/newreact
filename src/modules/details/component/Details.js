@@ -1,28 +1,30 @@
-import React from "react";
+import React, { Suspense } from "react";
+import {unstable_createResource as createResource} from 'react-cache'
 
-class Details extends React.Component {
-  state = {details: []}
+const detailsResouce = createResource(() => fetch("http://localhost:3009/api/details")
+  .then(resp => resp.json()))
 
-  componentDidMount(){
-    fetch("http://localhost:3009/api/details")
-    .then(resp => resp.json())
-    .then(details => this.setState({details}))
-  }
-  
-  render() {
-    const {details} = this.state
+const Details = () => {
 
-    return (
-      <div>
-        <div>Details: </div>
-        <ul>
-          {details.map(detail => (
-            <li key={detail}>{detail}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
+  const details = detailsResouce.read('1') // throw Promise
+
+  return (
+    <div>
+      <div>Details: </div>
+      
+      <ul>
+        {details.map(detail => (
+          <li key={detail}>{detail}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const DetailsPage = () => {
+  return <Suspense fallback={<div>Loading...</div>}>
+    <Details/>
+  </Suspense>
 }
 
-export default Details;
+export default DetailsPage;
