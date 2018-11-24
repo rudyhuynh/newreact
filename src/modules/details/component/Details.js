@@ -1,17 +1,25 @@
 import React, { Suspense } from "react";
 import {unstable_createResource as createResource} from 'react-cache'
+import * as api from '../api'
 
-const detailsResouce = createResource(() => fetch("http://localhost:3009/api/details")
-  .then(resp => resp.json()))
+const detailsResouce = createResource(api.fetchDetails)
 
 const Details = () => {
 
-  const details = detailsResouce.read('1') // throw Promise
+  const [cacheVersion, setCacheVersion] = React.useState(1)
+
+  const details = detailsResouce.read(cacheVersion) // throw Promise
+
+  const refresh = () => {
+    setCacheVersion(cacheVersion + 1)
+  }
 
   return (
     <div>
-      <div>Details: </div>
-      
+      <h1>Details: </h1>
+      <div>
+        <button onClick={refresh}>Refresh</button>
+      </div>
       <ul>
         {details.map(detail => (
           <li key={detail}>{detail}</li>
@@ -28,3 +36,5 @@ const DetailsPage = () => {
 }
 
 export default DetailsPage;
+
+
